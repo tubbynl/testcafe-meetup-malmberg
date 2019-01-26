@@ -1,0 +1,13 @@
+{
+  "name": "testcafe-meetup-malmberg",
+  "version": "0.0.1",
+  "description": "testcafe malmberg meetup",
+  "scripts": {
+    "tc:test": "./node_modules/.bin/testcafe chrome tests/final*.js"
+  },
+  "author": "Joost van Dieten",
+  "license": "MIT",
+  "dependencies": {
+    "testcafe": "^0.23.3"
+  }
+}
