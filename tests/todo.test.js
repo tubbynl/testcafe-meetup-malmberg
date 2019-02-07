@@ -6,9 +6,9 @@ fixture('Test TodoMVC App')
     .page('http://todomvc.com/examples/vanillajs/')
 
 // #2
-test.only('Create todo', async t => {
+test('Create todo', async t => {
 
-  // create todo item
+    // create todo item
     await t
         .typeText('input.new-todo','tubs vette todo')
         .pressKey('enter')
@@ -17,19 +17,28 @@ test.only('Create todo', async t => {
     const todoItems = Selector('ul.todo-list').child('li')
     await t.expect(todoItems.count).eql(1, 'expected 1 todo item')
 
-  // assert list contains the input item
+    // assert list contains the input item
     await t.expect(todoItems.nth(0).textContent).eql('tubs vette todo')
 
 });
 
 // #3
-test.skip('Edit todo', async t => {
+test('Edit todo', async t => {
 
-  // create a todo item
+    // create a todo item
+    await t
+        .typeText('input.new-todo','driedo')
+        .pressKey('enter')
 
-  // edit the created todo item
+    // edit the created todo item
+    const lastTodoItem = Selector('ul.todo-list').child('li')
+    await t
+        .doubleClick(lastTodoItem)
+        .typeText(lastTodoItem.find('input.edit'),'oooo.0.oooo')
+        .pressKey('enter')
 
-  // assert changed item in text in todo item
+    // assert changed item in text in todo item
+    await t.expect(lastTodoItem.textContent).eql('driedooooo.0.oooo')
 
 });
 
