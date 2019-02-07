@@ -87,19 +87,30 @@ test('Complete one todo', async t => {
 });
 
 // #6
-test.skip('Show active/completed todos', async t => {
+test('Show active/completed todos', async t => {
 
   // create 2 todo items
-
-  // complete first todo item
+    await t
+        .typeText('input.new-todo','eentje')
+        .pressKey('enter')
+        .typeText('input.new-todo','tweetje')
+        .pressKey('enter')
+        // complete first todo item
+        .click(Selector('ul.todo-list').child(0).find('input.toggle'))
 
   // when click on show active
-
-  // assert todo text equals second input todo item
+    const activeFilterLink = Selector('ul.filters').child(1).find('a')
+    await t.click(activeFilterLink)
+            .expect(Selector('ul.todo-list')
+            // assert todo text equals second input todo item
+            .child(0).textContent).eql('tweetje')
 
   // when click on show completed
-
-  // assert todo text equals first input todo item
+    const completedFilterLink = Selector('ul.filters').child(2).find('a')
+    await t.click(completedFilterLink)
+        .expect(Selector('ul.todo-list')
+        // assert todo text equals first input todo item
+            .child(0).textContent).eql('eentje')
 
 });
 
