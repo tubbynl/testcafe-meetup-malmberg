@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "testcafe malmberg meetup",
   "scripts": {
-    "tc:test": "./node_modules/.bin/testcafe chrome tests/*.js"
+    "testcafe": "./node_modules/.bin/testcafe chrome tests/*.js",
+    "speedcafe": "./node_modules/.bin/testcafe chrome tests/*.js -c 7"
   },
   "author": "Joost van Dieten",
   "license": "MIT",
