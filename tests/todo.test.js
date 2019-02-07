@@ -115,22 +115,46 @@ test('Show active/completed todos', async t => {
 });
 
 // #7
-test.skip('Complete all todos', async t => {
+test('Complete all todos', async t => {
   // create 4 todo items
+    await t
+        .typeText('input.new-todo','eeeen')
+        .pressKey('enter')
+        .typeText('input.new-todo','tweeeeee')
+        .pressKey('enter')
+        .typeText('input.new-todo','drieeeeeeee')
+        .pressKey('enter')
+        .typeText('input.new-todo','vieeeeeeeerrrrrrr')
+        .pressKey('enter')
 
   // complete all todo items
+    const toggleAll = Selector('input.toggle-all')
+    await t.click(toggleAll)
 
   // assert 4 todo items completed
+    await t.expect(Selector('ul.todo-list').child('li.completed').count).eql(4, 'expected 4 completed items')
 });
 
 // #8
-test.skip('Delete all completed todos', async t => {
+test('Delete all completed todos', async t => {
 
   // create 4 todo items
-
-  // complete all todo items
+    await t
+        .typeText('input.new-todo','eeeen')
+        .pressKey('enter')
+        .typeText('input.new-todo','tweeeeee')
+        .pressKey('enter')
+        .typeText('input.new-todo','drieeeeeeee')
+        .pressKey('enter')
+        .typeText('input.new-todo','vieeeeeeeerrrrrrr')
+        .pressKey('enter')
+        // complete all todo items
+        .click('input.toggle-all')
 
   // delete all completed items
+    const deleteAll = Selector('button.clear-completed')
+    await t.click(deleteAll)
 
   // assert 0 todo items in todo list
+    await t.expect(Selector('ul.todo-list').child().count).eql(0, 'expected 0 todo items')
 });
