@@ -43,15 +43,26 @@ test('Edit todo', async t => {
 });
 
 // #4
-test.skip('Delete todo', async t => {
+test('Delete todo', async t => {
 
   // create 2 todo items
+    await t
+        .typeText('input.new-todo','tododelete')
+        .pressKey('enter')
+        .typeText('input.new-todo','todonotdelete')
+        .pressKey('enter')
+    await t.expect(Selector('ul.todo-list').child().count).eql(2, 'expected 2 todo items')
 
   // delete first todo item
+    const firstTodoItem = Selector('ul.todo-list').child(0)
+    await t.hover(firstTodoItem)
+        .click(firstTodoItem.find('button.destroy'))
 
   // assert 1 item in todo list
+    await t.expect(Selector('ul.todo-list').child().count).eql(1, 'expected 1 todo item')
 
   // assert todo text equals second input todo item
+    await t.expect(firstTodoItem.textContent).eql('todonotdelete')
 
 });
 
