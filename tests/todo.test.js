@@ -67,13 +67,22 @@ test('Delete todo', async t => {
 });
 
 // #5
-test.skip('Complete one todo', async t => {
+test('Complete one todo', async t => {
 
   // create 2 todo items
+    await t
+        .typeText('input.new-todo','niet check')
+        .pressKey('enter')
+        .typeText('input.new-todo','wel check')
+        .pressKey('enter')
 
   // complete first todo item
+    const firstTodoItem = Selector('ul.todo-list').child(0)
+    await t.click(firstTodoItem.find('input.toggle'))
 
   // assert first todo item has class completed
+
+    await t.expect(firstTodoItem.hasClass('completed')).ok('test');
 
 });
 
