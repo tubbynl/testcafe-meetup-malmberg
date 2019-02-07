@@ -1,88 +1,135 @@
-import { TodoPo } from './po/todo.po';
+import { Selector} from 'testcafe';
+import { TodoPo } from "./po/todo.po";
 
-// #1: page under test is http://todomvc.com/examples/vanillajs/
+const todoPage = new TodoPo();
+
 fixture('Test TodoMVC App')
+  .page('http://todomvc.com/examples/vanillajs/');
 
-// #2
-test.skip('Create todo', async t => {
 
-  // create todo item
+test('Create todo', async t => {
+  await t.typeText(todoPage.input, 'explore TestCafe')
+    .pressKey('enter');
 
-  // assert 1 item in list
+  await t.expect(todoPage.todoItems.count)
+    .eql(1);
 
-  // assert list contains the input item
-
+  await t.expect(todoPage.todoItems.nth(0).textContent).eql('explore TestCaf');
+  await t.expect(todoPage.firstTodoItem.textContent)
+    .contains('explore TestCafe');
 });
 
-// #3
+
 test.skip('Edit todo', async t => {
+  await t.typeText(todoPage.input, 'explore TestCafe')
+    .pressKey('enter');
 
-  // create a todo item
+  await t.doubleClick(todoPage.firstTodoItem)
+    .selectText(todoPage.editInput, 8)
+    .pressKey('backspace')
+    .typeText(todoPage.editInput, 'something different')
+    .pressKey('enter');
 
-  // edit the created todo item
-
-  // assert changed item in text in todo item
-
+  await t.expect(todoPage.firstTodoItem.textContent)
+    .contains('explore something different');
 });
 
-// #4
+
 test.skip('Delete todo', async t => {
+  await t.typeText(todoPage.input, 'explore TestCafe')
+    .pressKey('enter')
+    .typeText(todoPage.input, 'buy some beer')
+    .pressKey('enter');
 
-  // create 2 todo items
+  await t.expect(todoPage.todoItems.count)
+    .eql(2);
 
-  // delete first todo item
+  await t.hover(todoPage.firstTodoItem)
+    .click(todoPage.todoItems.nth(0).find('.destroy'));
 
-  // assert 1 item in todo list
+  await t.expect(todoPage.todoItems.count)
+    .eql(1);
 
-  // assert todo text equals second input todo item
-
+  await t.expect(todoPage.firstTodoItem.textContent)
+    .contains('buy some beer');
 });
 
-// #5
+
 test.skip('Complete one todo', async t => {
+  await t.typeText(todoPage.input, 'explore TestCafe')
+    .pressKey('enter')
+    .typeText(todoPage.input, 'buy some beer')
+    .pressKey('enter');
 
-  // create 2 todo items
+  await t.click(todoPage.todoItems.nth(0).find('.toggle'));
 
-  // complete first todo item
+  await t.expect(todoPage.todoItems.nth(0).hasClass('completed')).ok();
 
-  // assert first todo item has class completed
-
+  await t.expect(todoPage.todoItems.count).eql(2);
 });
 
-// #6
+
 test.skip('Show active/completed todos', async t => {
+  await t.typeText(todoPage.input, 'explore TestCafe')
+    .pressKey('enter')
+    .typeText(todoPage.input, 'buy some beer')
+    .pressKey('enter');
 
-  // create 2 todo items
+  await t.click(todoPage.todoItems.nth(0).find('.toggle'));
 
-  // complete first todo item
+  await t.expect(todoPage.todoItems.count)
+    .eql(2);
 
   // when click on show active
+  await t.click(todoPage.showActiveLink);
 
-  // assert todo text equals second input todo item
+  await t.expect(todoPage.todoItems.nth(0).textContent)
+    .contains('buy some beer');
 
   // when click on show completed
+  await t.click(await Selector(todoPage.showCompletedLink));
 
-  // assert todo text equals first input todo item
-
+  await t.expect(todoPage.firstTodoItem.textContent)
+    .contains('explore TestCafe');
 });
 
-// #7
+
 test.skip('Complete all todos', async t => {
-  // create 4 todo items
+  await t.typeText(todoPage.input, 'explore TestCafe')
+    .pressKey('enter')
+    .typeText(todoPage.input, 'buy some beer')
+    .pressKey('enter')
+    .typeText(todoPage.input, 'watch a movie')
+    .pressKey('enter')
+    .typeText(todoPage.input, 'go to a meeting')
+    .pressKey('enter');
 
-  // complete all todo items
+  await t.expect(todoPage.todoItems.count)
+    .eql(4)
+    .expect(todoPage.completedTodos.count)
+    .eql(0);
 
-  // assert 4 todo items completed
+  await t.click(todoPage.completeAll);
+
+  await t.expect(todoPage.completedTodos.count)
+    .eql(4);
 });
 
-// #8
+
 test.skip('Delete all completed todos', async t => {
 
-  // create 4 todo items
+  let todos = ['explore TestCafe', 'buy some beer', 'watch a movie', 'go to a meeting'];
 
-  // complete all todo items
+  for (let todo of todos)
+    await t.typeText(todoPage.input, todo)
+      .pressKey('enter');
 
-  // delete all completed items
+  await t.expect(todoPage.todoItems.count)
+    .eql(todos.length);
 
-  // assert 0 todo items in todo list
+  await t.click(todoPage.completeAll)
+    .click(todoPage.deleteCompleted);
+
+  await t.expect(todoPage.todoItems.count)
+    .eql(0);
 });

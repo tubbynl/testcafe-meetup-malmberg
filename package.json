@@ -1,13 +1,24 @@
 {
-  "name": "testcafe-meetup-malmberg",
-  "version": "0.0.1",
-  "description": "testcafe malmberg meetup",
+  "name": "testcafe-todomvc",
+  "version": "1.0.0",
+  "description": "testcafe todomvc example",
   "scripts": {
-    "tc:test": "./node_modules/.bin/testcafe chrome tests/*.js"
+    "test:all": "./node_modules/.bin/testcafe all tests/ --speed 0.6",
+    "test:remote": "./node_modules/.bin/testcafe remote tests/*.js --qr-code",
+    "test:ci": "./node_modules/.bin/testcafe chrome:headless tests/ --concurrency 7",
+    "test:speed": "./node_modules/.bin/testcafe chrome tests/ --speed 0.5",
+    "test:emulate": "./node_modules/.bin/testcafe 'chrome:emulation:device=iphone 6/7/8' tests/final*.js",
+    "test:parallel": "./node_modules/.bin/testcafe chrome tests/ --concurrency 7",
+    "test:headless": "./node_modules/.bin/testcafe chrome:headless tests/",
+    "test:debug": "./node_modules/.bin/testcafe chrome tests/ --debug-on-fail",
+    "test:screenshots": "./node_modules/.bin/testcafe chrome tests/ --screenshots-on-fails -s screenshots",
+    "test": "./node_modules/.bin/testcafe chrome tests/final*.js"
   },
   "author": "Joost van Dieten",
   "license": "MIT",
   "dependencies": {
-    "testcafe": "^0.23.3"
+    "testcafe": "^0.23.3",
+    "qrcode-terminal": "^0.12.0",
+    "testcafe-reporter-html": "^1.4.4"
   }
 }
