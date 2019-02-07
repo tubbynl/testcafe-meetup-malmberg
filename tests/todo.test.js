@@ -1,16 +1,24 @@
 import { TodoPo } from './po/todo.po';
+import { Selector } from 'testcafe';
 
 // #1: page under test is http://todomvc.com/examples/vanillajs/
 fixture('Test TodoMVC App')
+    .page('http://todomvc.com/examples/vanillajs/')
 
 // #2
-test.skip('Create todo', async t => {
+test.only('Create todo', async t => {
 
   // create todo item
+    await t
+        .typeText('input.new-todo','tubs vette todo')
+        .pressKey('enter')
 
-  // assert 1 item in list
+    // assert 1 item in list
+    const todoItems = Selector('ul.todo-list').child('li')
+    await t.expect(todoItems.count).eql(1, 'expected 1 todo item')
 
   // assert list contains the input item
+    await t.expect(todoItems.nth(0).textContent).eql('tubs vette todo')
 
 });
 
