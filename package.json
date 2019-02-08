@@ -4,7 +4,9 @@
   "description": "testcafe malmberg meetup",
   "scripts": {
     "testcafe": "./node_modules/.bin/testcafe chrome tests/*.js",
-    "speedcafe": "./node_modules/.bin/testcafe chrome tests/*.js -c 7"
+    "speedcafe": "./node_modules/.bin/testcafe chrome tests/*.js -c 7",
+    "qrcafe": "./node_modules/.bin/testcafe remote chrome tests/*.js --qr-code",
+    "slowcafe": "./node_modules/.bin/testcafe chrome tests/*.js --speed 0.5"
   },
   "author": "Joost van Dieten",
   "license": "MIT",
